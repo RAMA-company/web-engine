@@ -40,7 +40,6 @@ body {
     padding: 1rem;
 }
 
-/* Hero Section */
 .hero {
     text-align: center;
     padding: 4rem 1rem;
@@ -67,7 +66,6 @@ body {
     color: var(--light-text);
 }
 
-/* Builder Section */
 .builder {
     display: flex;
     justify-content: center;
@@ -319,7 +317,6 @@ body {
     font-size: 1rem;
 }
 
-/* Responsive Breakpoints */
 @media (min-width: 768px) {
     .builder-card {
         width: 85vw;
