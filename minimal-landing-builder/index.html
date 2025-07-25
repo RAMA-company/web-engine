@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Landing Page Builder</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lightweight Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Minimal Landing Page Builder</h1>
+            <p>Create beautiful, responsive landing pages in seconds. No coding required.</p>
+            <div class="color-palette">
+                <div class="color-option" style="background: #4F46E5;"></div>
+                <div class="color-option" style="background: #2563EB;"></div>
+                <div class="color-option" style="background: #059669;"></div>
+                <div class="color-option" style="background: #D97706;"></div>
+                <div class="color-option" style="background: #DC2626;"></div>
+                <div class="color-option" style="background: #7C3AED;"></div>
+            </div>
+        </section>
+        
+        <!-- Builder Section -->
+        <section class="builder">
+            <div class="builder-card">
+                <div id="builder-components">
+                    <!-- Components will be added here by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Minimal Landing Page Builder • Optimized for GitHub Pages</p>
+    </footer>
+    
+    <div class="notification" id="notification">Changes saved locally!</div>
+    
+    <script src="scripts/builder.js"></script>
+</body>
+</html>
