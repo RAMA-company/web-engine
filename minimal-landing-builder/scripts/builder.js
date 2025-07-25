@@ -1,4 +1,3 @@
-// Builder Components Configuration
 const builderComponents = [
     {
         type: "input",
@@ -69,7 +68,6 @@ const builderComponents = [
     }
 ];
 
-// State Management
 let currentSections = [];
 let currentTheme = "#4F46E5";
 let currentSeoTopic = "Portfolio";
@@ -79,13 +77,10 @@ let pageData = {
     footer: "© 2023 My Landing Page"
 };
 
-// DOM Elements
 const builderContainer = document.getElementById('builder-components');
 const notification = document.getElementById('notification');
 
-// Initialize the Builder
 function initBuilder() {
-    // Load saved data if exists
     const savedData = localStorage.getItem('landingProject');
     if (savedData) {
         const data = JSON.parse(savedData);
@@ -101,27 +96,22 @@ function initBuilder() {
         currentSections = [...builderComponents[2].sections];
     }
     
-    // Render all components
     builderComponents.forEach(component => {
         const componentEl = createComponent(component);
         builderContainer.appendChild(componentEl);
     });
     
-    // Set initial values
     document.getElementById('title').value = pageData.title;
     document.getElementById('subtitle').value = pageData.subtitle;
     document.getElementById('footer-text').value = pageData.footer;
     
-    // Initialize auto-save
     initAutoSave();
 }
 
-// Create a single builder component
 function createComponent(component) {
     const div = document.createElement('div');
     div.className = 'builder-component';
     
-    // Create header with icon
     div.innerHTML = `
         <div class="component-header">
             <div class="component-icon">${component.icon}</div>
@@ -160,7 +150,7 @@ function createComponent(component) {
         case 'color-palette':
             div.innerHTML += `
                 <div class="color-palette">
-                    ${component.options.map((color, index) => `
+                    ${component.options.map((color) => `
                         <div class="color-option ${color === currentTheme ? 'active' : ''}" 
                              data-color="${color}" 
                              style="background: ${color};"
@@ -206,7 +196,6 @@ function createComponent(component) {
     return div;
 }
 
-// Render sections for section manager
 function renderSections() {
     return currentSections.map((section, index) => `
         <div class="section" data-index="${index}">
@@ -249,7 +238,6 @@ function renderSections() {
     `).join('');
 }
 
-// Section management functions
 function addSection() {
     currentSections.push({
         title: "New Section",
@@ -300,23 +288,18 @@ function removeSection(index) {
 
 function moveSectionUp(index) {
     if (index > 0) {
-        const temp = currentSections[index];
-        currentSections[index] = currentSections[index-1];
-        currentSections[index-1] = temp;
+        [currentSections[index], currentSections[index-1]] = [currentSections[index-1], currentSections[index]];
         document.getElementById('sections-container').innerHTML = renderSections();
     }
 }
 
 function moveSectionDown(index) {
     if (index < currentSections.length - 1) {
-        const temp = currentSections[index];
-        currentSections[index] = currentSections[index+1];
-        currentSections[index+1] = temp;
+        [currentSections[index], currentSections[index+1]] = [currentSections[index+1], currentSections[index]];
         document.getElementById('sections-container').innerHTML = renderSections();
     }
 }
 
-// Theme selection
 function selectTheme(color) {
     currentTheme = color;
     document.querySelectorAll('.color-option').forEach(option => {
@@ -337,7 +320,6 @@ function lightenColor(color, percent) {
             (B<255?B<0?0:B:255)).toString(16).slice(1)}`;
 }
 
-// SEO topic selection
 function selectSeoTopic(topic) {
     currentSeoTopic = topic;
     document.querySelectorAll('.seo-option').forEach(option => {
@@ -346,10 +328,8 @@ function selectSeoTopic(topic) {
     showNotification(`SEO category set to: ${topic}`);
 }
 
-// Auto-save functionality
 function initAutoSave() {
     setInterval(() => {
-        // Gather all page data
         pageData.title = document.getElementById('title').value;
         pageData.subtitle = document.getElementById('subtitle').value;
         pageData.footer = document.getElementById('footer-text').value;
@@ -366,7 +346,6 @@ function initAutoSave() {
     }, 10000);
 }
 
-// Notification system
 function showNotification(message) {
     notification.textContent = message;
     notification.classList.add('show');
@@ -376,12 +355,10 @@ function showNotification(message) {
     }, 3000);
 }
 
-// Preview functionality
 function previewLandingPage() {
     const previewContainer = document.getElementById('preview-container');
     const previewContent = document.getElementById('preview-content');
     
-    // Generate preview HTML
     previewContent.innerHTML = `
         <div style="padding: 2rem; font-family: 'Inter', sans-serif;">
             <h1 style="color: ${currentTheme};">${pageData.title}</h1>
@@ -414,11 +391,9 @@ function closePreview() {
     document.getElementById('preview-container').style.display = 'none';
 }
 
-// ZIP export functionality
 function generateZip() {
     const title = pageData.title || 'My Landing Page';
     
-    // Generate HTML content
     const htmlContent = `
         <!DOCTYPE html>
         <html lang="en">
@@ -532,7 +507,6 @@ function generateZip() {
         </html>
     `;
     
-    // Create ZIP file
     const zip = new JSZip();
     zip.file("index.html", htmlContent);
     
@@ -544,10 +518,9 @@ function generateZip() {
     showNotification("Landing page exported as ZIP!");
 }
 
-// Initialize the builder when page loads
 document.addEventListener('DOMContentLoaded', initBuilder);
 
-// Expose functions to global scope for inline event handlers
+// Expose functions to global scope
 window.updateSectionTitle = updateSectionTitle;
 window.updateSectionDescription = updateSectionDescription;
 window.addButtonToSection = addButtonToSection;
