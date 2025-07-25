@@ -7,7 +7,472 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        :root {
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --transition: all 300ms ease-in-out;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            --primary-indigo: #4F46E5;
+            --primary-blue: #2563EB;
+            --primary-emerald: #059669;
+            --primary-amber: #D97706;
+            --primary-red: #DC2626;
+            --primary-purple: #7C3AED;
+            
+            --dark-text: #1E293B;
+            --light-text: #64748B;
+            --white: #ffffff;
+            --light-bg: #F8FAFC;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #e2e8f0;
+        }
+        
+        .hero h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(90deg, var(--primary-indigo), var(--primary-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            color: var(--light-text);
+        }
+        
+        /* Builder Section */
+        .builder {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .builder-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 800px;
+            transition: var(--transition);
+            border: 1px solid #E2E8F0;
+        }
+        
+        .builder-component {
+            margin-bottom: 1.25rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid #EDF2F7;
+        }
+        
+        .builder-component:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            transition: var(--transition);
+            background: #F8FAFC;
+        }
+        
+        .input-group:focus-within {
+            border-color: #4dabf7;
+            box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.1);
+        }
+        
+        .input-group input, .input-group textarea {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: var(--font-family);
+            font-size: 1rem;
+            padding: 0.25rem;
+            background: transparent;
+            width: 100%;
+        }
+        
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .icon {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+            color: #94A3B8;
+            min-width: 24px;
+        }
+        
+        .section-manager {
+            border: 1px dashed #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            background: #F8FAFC;
+        }
+        
+        .section {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            border: 1px solid #E2E8F0;
+            box-shadow: var(--shadow);
+        }
+        
+        .section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            background: var(--primary-indigo);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-family);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn:hover {
+            background: var(--primary-blue);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .btn-outline:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+        
+        .color-palette {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+        
+        .color-option {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            box-shadow: var(--shadow);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.active {
+            border-color: var(--dark-text);
+            transform: scale(1.1);
+        }
+        
+        .save-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-top: 1px solid #edf2f7;
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .save-panel .auto-save {
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--primary-indigo);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            z-index: 100;
+            max-width: 300px;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .seo-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .seo-option {
+            background: #EDF2F7;
+            padding: 0.5rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+        
+        .seo-option:hover {
+            background: #E2E8F0;
+        }
+        
+        .seo-option.active {
+            background: var(--primary-indigo);
+            color: white;
+        }
+        
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-indigo);
+            font-size: 1.1rem;
+        }
+        
+        .section-title::before {
+            content: "—";
+            color: var(--primary-indigo);
+        }
+        
+        .move-handle {
+            cursor: move;
+            color: #a0aec0;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem;
+        }
+        
+        .component-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .component-icon {
+            background: #EDE9FE;
+            color: var(--primary-indigo);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .component-header div h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .component-header div p {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--light-text);
+            font-size: 0.85rem;
+            border-top: 1px solid #E2E8F0;
+            margin-top: 2rem;
+        }
+        
+        .preview-container {
+            border: 2px dashed #E2E8F0;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            background: #F8FAFC;
+            display: none;
+        }
+        
+        .preview-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .preview-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            min-height: 150px;
+            overflow: auto;
+        }
+        
+        /* Button in sections */
+        .button-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .button-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Responsive Breakpoints */
+        @media (min-width: 480px) {
+            .hero {
+                padding: 3rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1.25rem;
+            }
+            
+            .button-row {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .button-actions {
+                flex: 1;
+            }
+            
+            .save-panel {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .action-buttons {
+                justify-content: flex-end;
+            }
+            
+            .preview-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .hero {
+                padding: 4rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .builder-card {
+                padding: 2rem;
+            }
+            
+            .section {
+                padding: 1.25rem;
+            }
+            
+            .preview-container {
+                padding: 1.5rem;
+            }
+            
+            .preview-content {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -37,6 +502,551 @@
     
     <div class="notification" id="notification">Changes saved locally!</div>
     
-    <script src="scripts/builder.js"></script>
+    <script>
+        const builderComponents = [
+            {
+                type: "input",
+                id: "title",
+                placeholder: "Enter your page title...",
+                icon: "✏️",
+                label: "Page Title",
+                description: "The main heading for your landing page"
+            },
+            {
+                type: "input",
+                id: "subtitle",
+                placeholder: "Enter your page subtitle...",
+                icon: "📝",
+                label: "Page Subtitle",
+                description: "A short description that appears under the title"
+            },
+            {
+                type: "section-manager",
+                actions: ["add", "remove", "reorder"],
+                sections: [
+                    {
+                        title: "About Us",
+                        description: "A brief description of your company or service...",
+                        buttons: [
+                            { text: "Learn More", link: "#", icon: "→" }
+                        ]
+                    },
+                    {
+                        title: "Features",
+                        description: "Highlight your key features or benefits...",
+                        buttons: [
+                            { text: "View Features", link: "#", icon: "🔍" }
+                        ]
+                    }
+                ],
+                label: "Page Sections",
+                description: "Add, remove and reorder content sections",
+                icon: "📑"
+            },
+            {
+                type: "input",
+                id: "footer-text",
+                placeholder: "Enter footer text...",
+                icon: "📌",
+                label: "Footer Text",
+                description: "Text that appears at the bottom of the page"
+            },
+            {
+                type: "color-palette",
+                options: ["#4F46E5", "#2563EB", "#059669", "#D97706", "#DC2626", "#7C3AED"],
+                label: "Color Theme",
+                description: "Choose a primary color for your landing page",
+                icon: "🎨"
+            },
+            {
+                type: "seo-selector",
+                topics: ["Portfolio", "Product", "Blog", "Service", "Event", "Personal"],
+                label: "SEO Category",
+                description: "Select a category for SEO optimization",
+                icon: "🔍"
+            },
+            {
+                type: "save-panel",
+                features: ["Auto-save to localStorage", "Preview", "Download ZIP"],
+                label: "Export Options",
+                icon: "💾"
+            }
+        ];
+
+        let currentSections = [];
+        let currentTheme = "#4F46E5";
+        let currentSeoTopic = "Portfolio";
+        let pageData = {
+            title: "Minimal Landing Page",
+            subtitle: "Create your beautiful landing page",
+            footer: "© 2023 My Landing Page"
+        };
+
+        const builderContainer = document.getElementById('builder-components');
+        const notification = document.getElementById('notification');
+
+        function initBuilder() {
+            const savedData = localStorage.getItem('landingProject');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                currentSections = data.sections || [];
+                currentTheme = data.theme || "#4F46E5";
+                currentSeoTopic = data.seoTopic || "Portfolio";
+                pageData = data.pageData || {
+                    title: "Minimal Landing Page",
+                    subtitle: "Create your beautiful landing page",
+                    footer: "© 2023 My Landing Page"
+                };
+            } else {
+                currentSections = [...builderComponents[2].sections];
+            }
+            
+            builderComponents.forEach(component => {
+                const componentEl = createComponent(component);
+                builderContainer.appendChild(componentEl);
+            });
+            
+            document.getElementById('title').value = pageData.title;
+            document.getElementById('subtitle').value = pageData.subtitle;
+            document.getElementById('footer-text').value = pageData.footer;
+            
+            initAutoSave();
+        }
+
+        function createComponent(component) {
+            const div = document.createElement('div');
+            div.className = 'builder-component';
+            
+            div.innerHTML = `
+                <div class="component-header">
+                    <div class="component-icon">${component.icon}</div>
+                    <div>
+                        <h3>${component.label}</h3>
+                        <p class="light-text">${component.description || ''}</p>
+                    </div>
+                </div>
+            `;
+            
+            switch(component.type) {
+                case 'input':
+                    div.innerHTML += `
+                        <div class="input-group">
+                            <span class="icon">${component.icon}</span>
+                            <input type="text" id="${component.id}" placeholder="${component.placeholder}" value="">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'section-manager':
+                    div.innerHTML += `
+                        <div class="section-manager">
+                            <div class="sections-container" id="sections-container">
+                                ${renderSections()}
+                            </div>
+                            <button class="btn" id="add-section" style="margin-top: 1rem;">
+                                <span>+</span> Add New Section
+                            </button>
+                        </div>
+                    `;
+                    const addButton = div.querySelector('#add-section');
+                    addButton.addEventListener('click', addSection);
+                    break;
+                    
+                case 'color-palette':
+                    div.innerHTML += `
+                        <div class="color-palette">
+                            ${component.options.map((color) => `
+                                <div class="color-option ${color === currentTheme ? 'active' : ''}" 
+                                     data-color="${color}" 
+                                     style="background: ${color};"
+                                     onclick="selectTheme('${color}')"></div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'seo-selector':
+                    div.innerHTML += `
+                        <div class="seo-selector">
+                            ${component.topics.map(topic => `
+                                <div class="seo-option ${topic === currentSeoTopic ? 'active' : ''}" 
+                                     onclick="selectSeoTopic('${topic}')">${topic}</div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'save-panel':
+                    div.innerHTML += `
+                        <div class="save-panel">
+                            <div class="auto-save">${component.features[0]}</div>
+                            <div class="action-buttons">
+                                <button class="btn btn-outline" id="preview-btn">${component.features[1]}</button>
+                                <button class="btn" id="export-btn">${component.features[2]}</button>
+                            </div>
+                        </div>
+                        <div class="preview-container" id="preview-container">
+                            <div class="preview-header">
+                                <h3>Page Preview</h3>
+                                <button class="btn btn-outline" onclick="closePreview()">Close</button>
+                            </div>
+                            <div class="preview-content" id="preview-content"></div>
+                        </div>
+                    `;
+                    document.getElementById('export-btn').addEventListener('click', generateZip);
+                    document.getElementById('preview-btn').addEventListener('click', previewLandingPage);
+                    break;
+            }
+            
+            return div;
+        }
+
+        function renderSections() {
+            return currentSections.map((section, index) => `
+                <div class="section" data-index="${index}">
+                    <div class="move-handle">≡</div>
+                    <div class="section-title">Section ${index + 1}</div>
+                    <div class="input-group">
+                        <input type="text" placeholder="Section Title" value="${section.title}" 
+                               oninput="updateSectionTitle(${index}, this.value)">
+                    </div>
+                    <div class="input-group">
+                        <textarea placeholder="Section Description" 
+                                  oninput="updateSectionDescription(${index}, this.value)">${section.description}</textarea>
+                    </div>
+                    <div>
+                        <h4 style="margin: 1rem 0 0.5rem;">Buttons</h4>
+                        ${section.buttons.map((button, btnIndex) => `
+                            <div class="button-row">
+                                <div class="input-group" style="flex: 1;">
+                                    <input type="text" placeholder="Button Text" value="${button.text}" 
+                                           oninput="updateButtonText(${index}, ${btnIndex}, this.value)">
+                                </div>
+                                <div class="input-group" style="flex: 1;">
+                                    <input type="text" placeholder="Button Link" value="${button.link}" 
+                                           oninput="updateButtonLink(${index}, ${btnIndex}, this.value)">
+                                </div>
+                                <div class="button-actions">
+                                    <button class="btn btn-outline" 
+                                            onclick="removeButton(${index}, ${btnIndex})">Remove</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <button class="btn btn-outline" onclick="addButtonToSection(${index})">
+                            + Add Button
+                        </button>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-outline" onclick="moveSectionUp(${index})">Move Up</button>
+                        <button class="btn btn-outline" onclick="moveSectionDown(${index})">Move Down</button>
+                        <button class="btn btn-outline" onclick="removeSection(${index})">Remove Section</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addSection() {
+            currentSections.push({
+                title: "New Section",
+                description: "Describe what this section is about...",
+                buttons: []
+            });
+            document.getElementById('sections-container').innerHTML = renderSections();
+        }
+
+        function updateSectionTitle(index, value) {
+            currentSections[index].title = value;
+        }
+
+        function updateSectionDescription(index, value) {
+            currentSections[index].description = value;
+        }
+
+        function addButtonToSection(sectionIndex) {
+            currentSections[sectionIndex].buttons.push({
+                text: "New Button",
+                link: "#",
+                icon: ""
+            });
+            document.getElementById('sections-container').innerHTML = renderSections();
+        }
+
+        function updateButtonText(sectionIndex, buttonIndex, value) {
+            currentSections[sectionIndex].buttons[buttonIndex].text = value;
+        }
+
+        function updateButtonLink(sectionIndex, buttonIndex, value) {
+            currentSections[sectionIndex].buttons[buttonIndex].link = value;
+        }
+
+        function removeButton(sectionIndex, buttonIndex) {
+            currentSections[sectionIndex].buttons.splice(buttonIndex, 1);
+            document.getElementById('sections-container').innerHTML = renderSections();
+        }
+
+        function removeSection(index) {
+            if (currentSections.length > 1) {
+                currentSections.splice(index, 1);
+                document.getElementById('sections-container').innerHTML = renderSections();
+            } else {
+                showNotification("You need at least one section");
+            }
+        }
+
+        function moveSectionUp(index) {
+            if (index > 0) {
+                [currentSections[index], currentSections[index-1]] = [currentSections[index-1], currentSections[index]];
+                document.getElementById('sections-container').innerHTML = renderSections();
+            }
+        }
+
+        function moveSectionDown(index) {
+            if (index < currentSections.length - 1) {
+                [currentSections[index], currentSections[index+1]] = [currentSections[index+1], currentSections[index]];
+                document.getElementById('sections-container').innerHTML = renderSections();
+            }
+        }
+
+        function selectTheme(color) {
+            currentTheme = color;
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.toggle('active', option.dataset.color === color);
+            });
+            document.body.style.backgroundColor = lightenColor(color, 0.9);
+            showNotification("Theme updated");
+        }
+
+        function lightenColor(color, percent) {
+            const num = parseInt(color.replace("#", ""), 16);
+            const amt = Math.round(2.55 * percent * 100);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return `#${(0x1000000 + (R<255?R<0?0:R:255)*0x10000 + 
+                    (G<255?G<0?0:G:255)*0x100 + 
+                    (B<255?B<0?0:B:255)).toString(16).slice(1)}`;
+        }
+
+        function selectSeoTopic(topic) {
+            currentSeoTopic = topic;
+            document.querySelectorAll('.seo-option').forEach(option => {
+                option.classList.toggle('active', option.textContent === topic);
+            });
+            showNotification(`SEO category set to: ${topic}`);
+        }
+
+        function initAutoSave() {
+            setInterval(() => {
+                pageData.title = document.getElementById('title').value;
+                pageData.subtitle = document.getElementById('subtitle').value;
+                pageData.footer = document.getElementById('footer-text').value;
+                
+                const projectData = {
+                    pageData: pageData,
+                    sections: currentSections,
+                    theme: currentTheme,
+                    seoTopic: currentSeoTopic
+                };
+                
+                localStorage.setItem('landingProject', JSON.stringify(projectData));
+                showNotification('Changes saved locally');
+            }, 10000);
+        }
+
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function previewLandingPage() {
+            const previewContainer = document.getElementById('preview-container');
+            const previewContent = document.getElementById('preview-content');
+            
+            previewContent.innerHTML = `
+                <div style="padding: 1rem; font-family: 'Inter', sans-serif;">
+                    <h1 style="color: ${currentTheme}; font-size: 1.5rem; margin-bottom: 0.5rem;">${pageData.title}</h1>
+                    <p style="color: #64748B; margin-bottom: 1.5rem;">${pageData.subtitle}</p>
+                    
+                    ${currentSections.map((section, index) => `
+                        <div style="background: white; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                            <h2 style="color: ${currentTheme}; font-size: 1.2rem;">${section.title}</h2>
+                            <p style="color: #475569; margin-bottom: 0.75rem; font-size: 0.95rem;">${section.description}</p>
+                            <div>
+                                ${section.buttons.map(button => `
+                                    <a href="${button.link}" style="display: inline-block; background: ${currentTheme}; color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; margin-right: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;">
+                                        ${button.text}
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                    
+                    <div style="text-align: center; padding: 1rem; color: #64748B; margin-top: 1.5rem; border-top: 1px solid #E2E8F0; font-size: 0.85rem;">
+                        <p>${pageData.footer}</p>
+                    </div>
+                </div>
+            `;
+            
+            previewContainer.style.display = 'block';
+        }
+
+        function closePreview() {
+            document.getElementById('preview-container').style.display = 'none';
+        }
+
+        function generateZip() {
+            const title = pageData.title || 'My Landing Page';
+            
+            const htmlContent = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${title}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        :root {
+                            --primary-color: ${currentTheme};
+                            --text-color: #1E293B;
+                            --background-color: ${lightenColor(currentTheme, 0.9)};
+                        }
+                        
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        
+                        body {
+                            font-family: 'Inter', sans-serif;
+                            background-color: var(--background-color);
+                            color: var(--text-color);
+                            line-height: 1.6;
+                            padding: 0;
+                            margin: 0;
+                        }
+                        
+                        .container {
+                            max-width: 1200px;
+                            margin: 0 auto;
+                            padding: 1rem;
+                        }
+                        
+                        header {
+                            text-align: center;
+                            padding: 3rem 1rem;
+                        }
+                        
+                        h1 {
+                            font-size: 2rem;
+                            margin-bottom: 0.75rem;
+                            color: var(--primary-color);
+                        }
+                        
+                        section {
+                            background: white;
+                            border-radius: 12px;
+                            padding: 1.5rem;
+                            margin-bottom: 1.5rem;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                        }
+                        
+                        .btn {
+                            display: inline-block;
+                            background: var(--primary-color);
+                            color: white;
+                            padding: 0.75rem 1.5rem;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            margin-top: 1rem;
+                            font-weight: 500;
+                            transition: all 0.3s ease;
+                        }
+                        
+                        .btn:hover {
+                            opacity: 0.9;
+                            transform: translateY(-2px);
+                        }
+                        
+                        footer {
+                            text-align: center;
+                            padding: 1.5rem;
+                            color: #64748B;
+                            font-size: 0.9rem;
+                            border-top: 1px solid #E2E8F0;
+                            margin-top: 2rem;
+                        }
+                        
+                        @media (min-width: 768px) {
+                            header {
+                                padding: 4rem 1rem;
+                            }
+                            
+                            h1 {
+                                font-size: 2.5rem;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <header>
+                            <h1>${pageData.title}</h1>
+                            <p>${pageData.subtitle}</p>
+                        </header>
+                        
+                        ${currentSections.map((section, index) => `
+                            <section id="section-${index+1}">
+                                <h2>${section.title}</h2>
+                                <p>${section.description}</p>
+                                <div style="margin-top: 1rem;">
+                                    ${section.buttons.map(button => `
+                                        <a href="${button.link}" class="btn">${button.text}</a>
+                                    `).join(' ')}
+                                </div>
+                            </section>
+                        `).join('')}
+                        
+                        <footer>
+                            <p>${pageData.footer}</p>
+                        </footer>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            const zip = new JSZip();
+            zip.file("index.html", htmlContent);
+            
+            zip.generateAsync({type:"blob"})
+            .then(function(content) {
+                saveAs(content, "landing-page.zip");
+            });
+            
+            showNotification("Landing page exported as ZIP!");
+        }
+
+        document.addEventListener('DOMContentLoaded', initBuilder);
+
+        // Expose functions to global scope
+        window.updateSectionTitle = updateSectionTitle;
+        window.updateSectionDescription = updateSectionDescription;
+        window.addButtonToSection = addButtonToSection;
+        window.updateButtonText = updateButtonText;
+        window.updateButtonLink = updateButtonLink;
+        window.removeButton = removeButton;
+        window.removeSection = removeSection;
+        window.moveSectionUp = moveSectionUp;
+        window.moveSectionDown = moveSectionDown;
+        window.selectTheme = selectTheme;
+        window.selectSeoTopic = selectSeoTopic;
+        window.previewLandingPage = previewLandingPage;
+        window.closePreview = closePreview;
+    </script>
 </body>
 </html>
