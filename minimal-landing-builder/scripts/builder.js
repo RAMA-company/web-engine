@@ -534,3 +534,59 @@ window.selectTheme = selectTheme;
 window.selectSeoTopic = selectSeoTopic;
 window.previewLandingPage = previewLandingPage;
 window.closePreview = closePreview;
+
+// ... (previous code remains the same)
+
+function createComponent(component) {
+    const div = document.createElement('div');
+    div.className = 'builder-component';
+    
+    div.innerHTML = `
+        <div class="component-header">
+            <div class="component-icon">${component.icon}</div>
+            <div>
+                <h3>${component.label}</h3>
+                <p class="light-text">${component.description || ''}</p>
+            </div>
+        </div>
+    `;
+    
+    switch(component.type) {
+        // ... (other cases remain the same)
+            
+        case 'save-panel':
+            div.innerHTML += `
+                <div class="save-panel">
+                    <div class="auto-save">${component.features[0]}</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" id="preview-btn">${component.features[1]}</button>
+                        <button class="btn" id="export-btn">${component.features[2]}</button>
+                    </div>
+                </div>
+                <div class="preview-container" id="preview-container">
+                    <div class="preview-header">
+                        <h3>Page Preview</h3>
+                        <button class="btn btn-outline" onclick="closePreview()">Close</button>
+                    </div>
+                    <div class="preview-content" id="preview-content"></div>
+                </div>
+            `;
+            
+            // ADD THE MISSING BUTTON EVENT LISTENERS HERE
+            const exportBtn = div.querySelector('#export-btn');
+            const previewBtn = div.querySelector('#preview-btn');
+            
+            if (exportBtn) {
+                exportBtn.addEventListener('click', generateZip);
+            }
+            
+            if (previewBtn) {
+                previewBtn.addEventListener('click', previewLandingPage);
+            }
+            break;
+    }
+    
+    return div;
+}
+
+// ... (rest of the file remains the same)
